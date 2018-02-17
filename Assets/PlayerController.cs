@@ -2,7 +2,13 @@
 //  using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+// 追加
+using UnityEngine.SceneManagement;
+
+
+
+public class PlayerController : MonoBehaviour
+{
 
     Rigidbody2D rigid2D;
 
@@ -11,41 +17,72 @@ public class PlayerController : MonoBehaviour {
 
     float jumpForce = 680.0f;
 
-
-
     float walkForce = 30.0f;
     float maxWalkSpeed = 2.0f;
+
+    float threshold = 0.2f;
+
 
 
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
 
         this.rigid2D = GetComponent<Rigidbody2D>();
 
         this.animator = GetComponent<Animator>();
 
 
-
-
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
 
 
-        // ジャンプする
+        // ジャンプする  クリック
         if (Input.GetKeyDown(KeyCode.Space))
         {
             this.rigid2D.AddForce(transform.up * this.jumpForce);
-
         }
+
+        // ジャンプする  spaceキー
+
+        if (Input.GetKeyDown(KeyCode.Space) &&
+            this.rigid2D.velocity.y == 0)
+        {
+            this.animator.SetTrigger("JumpTrigger");
+            this.rigid2D.AddForce(transform.up * jumpForce);
+        }
+
+
+
+        // スマフォ　タップ　PC　クリック　でジャンプ
+
+        // if (Input.GetMouseButtonDown(0) &&
+        //    this.rigid2D.velocity.y == 0)
+        //  {
+
+        //    this.animator.SetTrigger("JumpTrigger");
+        //    this.rigid2D.AddForce(transform.up * jumpForce);
+
+
+        // this.rigid2D.AddForce(transform.up * this.jumpForce);
+        // }
 
 
         // 左右移動
         int key = 0;
         if (Input.GetKey(KeyCode.RightArrow)) key = 1;
         if (Input.GetKey(KeyCode.LeftArrow)) key = -1;
+
+
+        if (Input.acceleration.x > this.threshold) key = 1;
+        if (Input.acceleration.x < -this.threshold) key = -1;
+
+
+
 
         // プレーヤーの速度
         float speedx = Mathf.Abs(this.rigid2D.velocity.x);
@@ -57,28 +94,48 @@ public class PlayerController : MonoBehaviour {
         }
 
         // 動く方向に応じて反転
-        if (key != 0) {
+        if (key != 0)
+        {
             transform.localScale = new Vector3(key, 1, 1);
         }
 
 
         // プレイヤの速度に応じてアニメーション速度を変える
-        this.animator.speed = speedx / 2.0f;
+        // this.animator.speed = speedx / 2.0f;
+    
+
+        if (this.rigid2D.velocity.y == 0 ) { 
+            this.animator.speed = speedx / 2.0f ;
+        }
+        else
+        {
+            this.animator.speed = 1.0f ;
+        }
+
+
+        // 画面外に出た場合は最初から
+        if (transform.position.y < -10)
+        {
+            SceneManager.LoadScene("GameScene");
+        }
 
     }
+
 
     //　ゴールに到達
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("ゴール");
+
+        SceneManager.LoadScene("ClearScene");
+
+
     }
 
+}
 
 
-    }
 
-   
- 
 
 
 
