@@ -42,10 +42,10 @@ public class PlayerController : MonoBehaviour
 
 
         // ジャンプする  クリック
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            this.rigid2D.AddForce(transform.up * this.jumpForce);
-        }
+      //  if (Input.GetKeyDown(KeyCode.Space))
+      //  {
+      //      this.rigid2D.AddForce(transform.up * this.jumpForce);
+      //  }
 
         // ジャンプする  spaceキー
 
@@ -60,16 +60,16 @@ public class PlayerController : MonoBehaviour
 
         // スマフォ　タップ　PC　クリック　でジャンプ
 
-        // if (Input.GetMouseButtonDown(0) &&
-        //    this.rigid2D.velocity.y == 0)
-        //  {
+       //  if (Input.GetMouseButtonDown(0) &&
+       //    this.rigid2D.velocity.y == 0) 
+       //   {
+       //
+       //    this.animator.SetTrigger("JumpTrigger");
+       //     this.rigid2D.AddForce(transform.up * jumpForce);
 
-        //    this.animator.SetTrigger("JumpTrigger");
-        //    this.rigid2D.AddForce(transform.up * jumpForce);
 
-
-        // this.rigid2D.AddForce(transform.up * this.jumpForce);
-        // }
+     //         this.rigid2D.AddForce(transform.up * this.jumpForce);
+     //    }
 
 
         // 左右移動
